@@ -22,6 +22,6 @@
    - [x] Város adatainak módosítása
 - Látványosságok listázása, módosítása, törlése
   - [x] Eddig felvett látványosságok `Citadella - Ingyenes`
-   - [x] Induláskor minden látványosság megjelenítése, új felvételekor frissül
+   - [x] Város kiválasztásakor minden látványosság megjelenítése, új felvételekor frissül
    - [x] Listából való törlés, majd a lista frissítése
    - [x] Látványosság adatainak módosítása
