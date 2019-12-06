@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.varosok_lista = new System.Windows.Forms.ListBox();
             this.varosok_group = new System.Windows.Forms.GroupBox();
+            this.varos_torol = new System.Windows.Forms.Button();
             this.varos_menu_modosit = new System.Windows.Forms.Button();
             this.varos_menu_hozzaad = new System.Windows.Forms.Button();
             this.latvanyossagok_lista = new System.Windows.Forms.ListBox();
             this.latvanyossagok_group = new System.Windows.Forms.GroupBox();
+            this.latvanyossag_torol = new System.Windows.Forms.Button();
             this.latvanyossag_menu_modosit = new System.Windows.Forms.Button();
             this.latvanyossag_menu_hozzaad = new System.Windows.Forms.Button();
             this.varos_hozzaad_group = new System.Windows.Forms.GroupBox();
@@ -54,14 +57,15 @@
             this.latvanyossag_megsem = new System.Windows.Forms.Button();
             this.latvanyossag_modosit = new System.Windows.Forms.Button();
             this.latvanyossag_hozzaad = new System.Windows.Forms.Button();
-            this.latvanyossag_torol = new System.Windows.Forms.Button();
-            this.varos_torol = new System.Windows.Forms.Button();
+            this.latvanyossagok_logo = new System.Windows.Forms.PictureBox();
+            this.latvanyossagok_logo_cim = new System.Windows.Forms.Label();
             this.varosok_group.SuspendLayout();
             this.latvanyossagok_group.SuspendLayout();
             this.varos_hozzaad_group.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.varos_lakossag)).BeginInit();
             this.latvanyossag_hozzaad_group.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.latvanyossag_belepo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.latvanyossagok_logo)).BeginInit();
             this.SuspendLayout();
             // 
             // varosok_lista
@@ -85,6 +89,17 @@
             this.varosok_group.TabIndex = 1;
             this.varosok_group.TabStop = false;
             this.varosok_group.Text = "Városok";
+            // 
+            // varos_torol
+            // 
+            this.varos_torol.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.varos_torol.Location = new System.Drawing.Point(278, 263);
+            this.varos_torol.Name = "varos_torol";
+            this.varos_torol.Size = new System.Drawing.Size(57, 21);
+            this.varos_torol.TabIndex = 7;
+            this.varos_torol.Text = "Töröl";
+            this.varos_torol.UseVisualStyleBackColor = true;
+            this.varos_torol.Click += new System.EventHandler(this.varos_torol_Click);
             // 
             // varos_menu_modosit
             // 
@@ -115,6 +130,7 @@
             this.latvanyossagok_lista.Name = "latvanyossagok_lista";
             this.latvanyossagok_lista.Size = new System.Drawing.Size(322, 238);
             this.latvanyossagok_lista.TabIndex = 0;
+            this.latvanyossagok_lista.SelectedIndexChanged += new System.EventHandler(this.latvanyossagok_lista_SelectedIndexChanged);
             // 
             // latvanyossagok_group
             // 
@@ -128,6 +144,17 @@
             this.latvanyossagok_group.TabIndex = 2;
             this.latvanyossagok_group.TabStop = false;
             this.latvanyossagok_group.Text = "Látványosságok";
+            // 
+            // latvanyossag_torol
+            // 
+            this.latvanyossag_torol.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.latvanyossag_torol.Location = new System.Drawing.Point(278, 263);
+            this.latvanyossag_torol.Name = "latvanyossag_torol";
+            this.latvanyossag_torol.Size = new System.Drawing.Size(57, 21);
+            this.latvanyossag_torol.TabIndex = 8;
+            this.latvanyossag_torol.Text = "Töröl";
+            this.latvanyossag_torol.UseVisualStyleBackColor = true;
+            this.latvanyossag_torol.Click += new System.EventHandler(this.latvanyossag_torol_Click);
             // 
             // latvanyossag_menu_modosit
             // 
@@ -287,6 +314,7 @@
             this.latvanyossag_leiras.MaxLength = 1000;
             this.latvanyossag_leiras.Multiline = true;
             this.latvanyossag_leiras.Name = "latvanyossag_leiras";
+            this.latvanyossag_leiras.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.latvanyossag_leiras.Size = new System.Drawing.Size(177, 124);
             this.latvanyossag_leiras.TabIndex = 13;
             // 
@@ -351,33 +379,33 @@
             this.latvanyossag_hozzaad.UseVisualStyleBackColor = true;
             this.latvanyossag_hozzaad.Click += new System.EventHandler(this.latvanyossag_hozzaad_Click);
             // 
-            // latvanyossag_torol
+            // latvanyossagok_logo
             // 
-            this.latvanyossag_torol.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.latvanyossag_torol.Location = new System.Drawing.Point(278, 263);
-            this.latvanyossag_torol.Name = "latvanyossag_torol";
-            this.latvanyossag_torol.Size = new System.Drawing.Size(57, 21);
-            this.latvanyossag_torol.TabIndex = 8;
-            this.latvanyossag_torol.Text = "Töröl";
-            this.latvanyossag_torol.UseVisualStyleBackColor = true;
-            this.latvanyossag_torol.Click += new System.EventHandler(this.latvanyossag_torol_Click);
+            this.latvanyossagok_logo.Image = ((System.Drawing.Image)(resources.GetObject("latvanyossagok_logo.Image")));
+            this.latvanyossagok_logo.Location = new System.Drawing.Point(378, 171);
+            this.latvanyossagok_logo.Name = "latvanyossagok_logo";
+            this.latvanyossagok_logo.Size = new System.Drawing.Size(207, 134);
+            this.latvanyossagok_logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.latvanyossagok_logo.TabIndex = 5;
+            this.latvanyossagok_logo.TabStop = false;
             // 
-            // varos_torol
+            // latvanyossagok_logo_cim
             // 
-            this.varos_torol.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.varos_torol.Location = new System.Drawing.Point(278, 263);
-            this.varos_torol.Name = "varos_torol";
-            this.varos_torol.Size = new System.Drawing.Size(57, 21);
-            this.varos_torol.TabIndex = 7;
-            this.varos_torol.Text = "Töröl";
-            this.varos_torol.UseVisualStyleBackColor = true;
-            this.varos_torol.Click += new System.EventHandler(this.varos_torol_Click);
+            this.latvanyossagok_logo_cim.AutoSize = true;
+            this.latvanyossagok_logo_cim.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.latvanyossagok_logo_cim.Location = new System.Drawing.Point(391, 275);
+            this.latvanyossagok_logo_cim.Name = "latvanyossagok_logo_cim";
+            this.latvanyossagok_logo_cim.Size = new System.Drawing.Size(181, 16);
+            this.latvanyossagok_logo_cim.TabIndex = 6;
+            this.latvanyossagok_logo_cim.Text = "Látványosságok Alkalmazás";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(599, 612);
+            this.Controls.Add(this.latvanyossagok_logo_cim);
+            this.Controls.Add(this.latvanyossagok_logo);
             this.Controls.Add(this.latvanyossag_hozzaad_group);
             this.Controls.Add(this.varos_hozzaad_group);
             this.Controls.Add(this.latvanyossagok_group);
@@ -395,7 +423,9 @@
             this.latvanyossag_hozzaad_group.ResumeLayout(false);
             this.latvanyossag_hozzaad_group.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.latvanyossag_belepo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.latvanyossagok_logo)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -429,6 +459,8 @@
         private System.Windows.Forms.NumericUpDown latvanyossag_belepo;
         private System.Windows.Forms.Button varos_torol;
         private System.Windows.Forms.Button latvanyossag_torol;
+        private System.Windows.Forms.PictureBox latvanyossagok_logo;
+        private System.Windows.Forms.Label latvanyossagok_logo_cim;
     }
 }
 

@@ -3,14 +3,19 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace LatvanyossagokApplication {
     public partial class Form1 : Form {
         private MySqlConnection conn;
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+        static readonly HttpClient client = new HttpClient();
         public Form1() {
             InitializeComponent();
             conn = dbHelper.Conn();
@@ -29,6 +34,9 @@ namespace LatvanyossagokApplication {
                     varosok_lista.Items.Add(varos);
                 }
             }
+            varos_torol.Enabled = false;
+            latvanyossagok_logo.Image = ((System.Drawing.Image)(resources.GetObject("latvanyossagok_logo.Image")));
+            latvanyossagok_logo_cim.Visible = true;
         }
         private void LatvanyossagLista(int varos_id) {
             latvanyossagok_lista.Items.Clear();
@@ -45,6 +53,7 @@ namespace LatvanyossagokApplication {
                     latvanyossagok_lista.Items.Add(latvanyossag);
                 }
             }
+            latvanyossag_torol.Enabled = false;
         }
 
         private void VarosAdatok(int id) {
@@ -83,7 +92,7 @@ namespace LatvanyossagokApplication {
         }
 
         private void varos_hozzaad_Click(object sender, EventArgs e) {
-            if (varos_nev.Text.Length > 1 && varos_lakossag.Text.Length > 3) {
+            if (varos_nev.Text.Length > 1 && varos_lakossag.Text.Length > 2) {
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = @"INSERT INTO varosok (nev, lakossag) VALUES (@nev, @lakossag)";
                 cmd.Parameters.AddWithValue("@nev", varos_nev.Text);
@@ -92,6 +101,8 @@ namespace LatvanyossagokApplication {
                 varos_nev.Text = "";
                 varos_lakossag.Text = "";
                 VarosLista();
+            } else {
+                MessageBox.Show("Hiányzó adat.");
             }
         }
         private void latvanyossag_hozzaad_Click(object sender, EventArgs e) {
@@ -108,12 +119,14 @@ namespace LatvanyossagokApplication {
                 latvanyossag_leiras.Text = "";
                 latvanyossag_belepo.Text = "";
                 LatvanyossagLista(varos.Id);
+            } else {
+                MessageBox.Show("Hiányzó adat.");
             }
         }
 
         private void varos_modosit_Click(object sender, EventArgs e)
         {
-            if (varos_nev.Text.Length > 1 && varos_lakossag.Text.Length > 3)
+            if (varos_nev.Text.Length > 1 && varos_lakossag.Text.Length > 2)
             {
                 var varos = (Varos)varosok_lista.SelectedItem;
                 var cmd = conn.CreateCommand();
@@ -156,16 +169,13 @@ namespace LatvanyossagokApplication {
                 chck.CommandText = @"SELECT COUNT(id) FROM latvanyossagok WHERE varos_id=@varos_id";
                 chck.Parameters.AddWithValue("@varos_id", varos.Id);
                 long latvanyossag_db = (long)chck.ExecuteScalar();
-                if (latvanyossag_db < 1)
-                {
+                if (latvanyossag_db < 1) {
                     var cmd = conn.CreateCommand();
                     cmd.CommandText = "DELETE FROM varosok WHERE id=@id;";
                     cmd.Parameters.AddWithValue("@id", varos.Id);
                     cmd.ExecuteNonQuery();
                     VarosLista();
-                }
-                else
-                {
+                } else {
                     MessageBox.Show("A kiválasztott városnak még van rögzített látnivalója.", "Hiba");
                 }
             }
@@ -195,6 +205,7 @@ namespace LatvanyossagokApplication {
             if (latvanyossagok_lista.SelectedIndex > -1) {
                 latvanyossagok_group.Enabled = false;
                 latvanyossag_modosit.Enabled = true;
+                varosok_group.Enabled = false;
                 latvanyossag_hozzaad_group.Enabled = true;
                 var latvanyossag = (Latvanyossag)latvanyossagok_lista.SelectedItem;
                 LatvanyossagAdatok(latvanyossag.Id);
@@ -213,6 +224,7 @@ namespace LatvanyossagokApplication {
             latvanyossagok_group.Enabled = true;
             latvanyossag_hozzaad.Enabled = false;
             latvanyossag_modosit.Enabled = false;
+            varosok_group.Enabled = true;
             latvanyossag_hozzaad_group.Enabled = false;
             latvanyossag_nev.Text = "";
             latvanyossag_leiras.Text = "";
@@ -223,6 +235,45 @@ namespace LatvanyossagokApplication {
             if (varosok_lista.SelectedIndex > -1) {
                 var varos = (Varos)varosok_lista.SelectedItem;
                 LatvanyossagLista(varos.Id);
+                loadCimerAsync(varos.Nev);
+                varos_torol.Enabled = true;
+            } else {
+                varos_torol.Enabled = false;
+            }
+        }
+        private void latvanyossagok_lista_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (latvanyossagok_lista.SelectedIndex > -1) {
+                latvanyossag_torol.Enabled = true;
+            } else {
+                latvanyossag_torol.Enabled = false;
+            }
+        }
+
+        private async Task loadCimerAsync(string varos) {
+            try {
+                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+                HttpResponseMessage response = await client.GetAsync("https://magyarcimerek.hu/kereses/"+varos);
+                response.EnsureSuccessStatusCode();
+                string responseHeaders = response.Headers.ToString();
+                string responseBody = await response.Content.ReadAsStringAsync();
+                string[] cimer_ = responseBody.Split(new string[] { "<div class='img'>" }, StringSplitOptions.None);
+                if (cimer_.Length>1) {
+                    string cimer = cimer_[1];
+                    cimer = cimer.Split(new string[] { "/>" }, StringSplitOptions.None)[0];
+                    string cimer_url = cimer.Split(new string[] { "src='" }, StringSplitOptions.None)[1];
+                    cimer_url = cimer_url.Split(new string[] { "'" }, StringSplitOptions.None)[0];
+                    latvanyossagok_logo.LoadAsync("https://magyarcimerek.hu"+cimer_url);
+                    //latvanyossagok_logo.LoadAsync("http://www.nemzetijelkepek.hu/pictures/onkormanyzat/"+varos+"_265.jpg");
+                    latvanyossagok_logo_cim.Visible = false;
+                } else {
+                    latvanyossagok_logo.Image = ((System.Drawing.Image)(resources.GetObject("latvanyossagok_logo.Image")));
+                    latvanyossagok_logo_cim.Visible = true;
+                }
+            }
+            catch (HttpRequestException e) {
+                latvanyossagok_logo.Image = ((System.Drawing.Image)(resources.GetObject("latvanyossagok_logo.Image")));
+                latvanyossagok_logo_cim.Visible = true;
             }
         }
     }
